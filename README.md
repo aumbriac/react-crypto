@@ -2,6 +2,8 @@
 
 View trending cryptocurrencies, create a favorites list, view price charts, learn about different cryptocurrencies, and more. Uses the free Coingecko API. [https://coingecko.com](https://coingecko.com)
 
+![image](https://user-images.githubusercontent.com/6768725/144361475-adf8da65-1f88-4118-aee4-44ac7839bf36.png)
+
 ## Dependencies
 Axios
 Chart.js
