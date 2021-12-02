@@ -29,34 +29,11 @@ const AppState = props => {
     const [loading, setLoading] = React.useState(false)
     const prevCoin = usePrevious(state.coin.id)
 
-    const getDropdownItems = async () => {
-        const res = await axios.get(`https://api.coingecko.com/api/v3/coins/list?include_platform=false`)
-        dispatch({
-            type: 'GET_DROPDOWN_LIST',
-            payload: res.data
-        })
-    }
-
-    const getPriceBTC = async () => {
-        const res = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd`)
-        dispatch({
-            type: 'GET_PRICE_BTC',
-            payload: res.data.bitcoin.usd
-        })
-    }
-
     const getPopularSymbols = async () => {
         const res = await axios.get(`https://api.coingecko.com/api/v3/exchanges/gdax/tickers`)
         dispatch({
             type: 'GET_POPULAR_SYMBOLS',
             payload: [res.data.tickers]
-        })
-    }
-    
-    const updateDays = async days => {
-        dispatch({
-            type: 'UPDATE_DAYS',
-            payload: days
         })
     }
 
@@ -73,6 +50,15 @@ const AppState = props => {
         dispatch({
             type: 'GET_TRENDING_DATA',
             payload: res.data.coins
+        })
+    }
+
+    // The API relies on the price of Bitcoin to calculate price of cryptocurrencies in trending/favorites
+    const getPriceBTC = async () => {
+        const res = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd`)
+        dispatch({
+            type: 'GET_PRICE_BTC',
+            payload: res.data.bitcoin.usd
         })
     }
 
@@ -143,6 +129,21 @@ const AppState = props => {
             getPopularSymbols(),
             getDropdownItems()
         ])
+    }
+
+    const getDropdownItems = async () => {
+        const res = await axios.get(`https://api.coingecko.com/api/v3/coins/list?include_platform=false`)
+        dispatch({
+            type: 'GET_DROPDOWN_LIST',
+            payload: res.data
+        })
+    }
+
+    const updateDays = async days => {
+        dispatch({
+            type: 'UPDATE_DAYS',
+            payload: days
+        })
     }
 
     React.useEffect(() => {
