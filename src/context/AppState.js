@@ -7,10 +7,8 @@ import Loader from '../components/Layout/Loader'
 import usePrevious from '../hooks/usePrevious'
 import checkFloat from '../functions/checkFloat'
 import formatCryptoForServer from '../functions/formatCryptoForServer'
-import formatCryptoForClient from '../functions/formatCryptoForClient'
 
 const AppState = props => {
-    
     const initialState = {
         chart: {},
         coin: {},
@@ -29,7 +27,6 @@ const AppState = props => {
     const [tab, setTab] = useLocalStorageState('__coin_tab', 'trending')
     const [searchMatches, setSearchMatches] = React.useState([])
     const [loading, setLoading] = React.useState(false)
-
     const prevCoin = usePrevious(state.coin.id)
 
     const getDropdownItems = async () => {
@@ -41,9 +38,7 @@ const AppState = props => {
     }
 
     const getPriceBTC = async () => {
-        const res = await axios.get(
-            `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd`
-        )
+        const res = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd`)
         dispatch({
             type: 'GET_PRICE_BTC',
             payload: res.data.bitcoin.usd
@@ -51,9 +46,7 @@ const AppState = props => {
     }
 
     const getPopularSymbols = async () => {
-        const res = await axios.get(
-            `https://api.coingecko.com/api/v3/exchanges/gdax/tickers`
-        )
+        const res = await axios.get(`https://api.coingecko.com/api/v3/exchanges/gdax/tickers`)
         dispatch({
             type: 'GET_POPULAR_SYMBOLS',
             payload: [res.data.tickers]
@@ -68,9 +61,7 @@ const AppState = props => {
     }
 
     const getNews = async () => {
-        const res = await axios.get(
-            `https://api.coingecko.com/api/v3/status_updates`
-        )
+        const res = await axios.get(`https://api.coingecko.com/api/v3/status_updates`)
         dispatch({
             type: 'GET_NEWS',
             payload: res.data.status_updates
@@ -78,9 +69,7 @@ const AppState = props => {
     }  
 
     const getTrending = async () => {
-        const res = await axios.get(
-            `https://api.coingecko.com/api/v3/search/trending`
-        )
+        const res = await axios.get(`https://api.coingecko.com/api/v3/search/trending`)
         dispatch({
             type: 'GET_TRENDING_DATA',
             payload: res.data.coins
@@ -89,37 +78,29 @@ const AppState = props => {
 
     const getChart = async coin => {
         setLoading(true)
-        if (!coin)
-            return
+        if (!coin) return
         coin = formatCryptoForServer(coin)
         try {
-            const res = await axios.get(
-                `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=${state.days}`
-            )
-            if (res.data.prices.length < 20) {
-                setLoading(false)
-                if (prevCoin === undefined){
+            const chartData = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=usd&days=${state.days}`)
+            const volume = chartData.data.total_volumes.map(obj => obj[1])
+            const totalVolume = volume.reduce((a, b) => a + b)
+            const times = chartData.data.prices.map(obj => obj[0])
+            const prices = chartData.data.prices.map(obj => obj[1])
+            const firstPrice = Array.from(prices)[0]
+            const lowPrice = Math.min.apply(Math, prices)
+            const highPrice = Math.max.apply(Math, prices)
+            const currentPrice = prices[prices.length - 1]
+            if (chartData.data.prices.length < 20) {
+                if (prevCoin === undefined) {
                     setStorageCoin('bitcoin')
                     getChart('bitcoin')
                 }
                 getChart(prevCoin)
+                setLoading(false)
                 return alert('Not enough chart data for this coin')
             }
-            const volume = res.data.total_volumes.map(obj => obj[1])
-            const totalVolume = volume.reduce((a, b) => a + b)
-            const times = res.data.prices.map(obj => obj[0])
-            const prices = res.data.prices.map(obj => obj[1])
-            const firstPrice = Array.from(prices)[0]
-            const lowPrice = Math.min.apply(Math, prices)
-            const highPrice = Math.max.apply(Math, prices)
-            const currentPrice = parseFloat(prices[prices.length - 1])
-            
-            var color
-            if (firstPrice > currentPrice)
-                color = 'red'
-            else
-                color = 'green'
-
+            var chartColor
+            firstPrice > currentPrice ? chartColor = 'red' : chartColor = 'green'
             dispatch({
                 type: 'GET_CHART_DATA',
                 payload: {
@@ -127,43 +108,41 @@ const AppState = props => {
                     totalVolume: totalVolume,
                     times: times,
                     prices: prices,
-                    lowPrice: checkFloat(lowPrice),
-                    highPrice: checkFloat(highPrice),
+                    lowPrice: lowPrice,
+                    highPrice: highPrice,
                     priceDiff: checkFloat((parseFloat(currentPrice) - parseFloat(firstPrice))),
-                    color: color
+                    color: chartColor
                 }
             })
-            const coinData = await axios.get(
-                `https://api.coingecko.com/api/v3/coins/${coin}`
-            )
+            const coinData = await axios.get(`https://api.coingecko.com/api/v3/coins/${coin}`)
             dispatch({
                 type: 'GET_COIN',
                 payload: coinData.data
             })
             setLoading(false)
         } catch (error) {
-            setLoading(false)
+            alert(`Chart data not available for this coin`)
             getChart(prevCoin)
-            alert(`Chart data not available for ${formatCryptoForClient(coin)}`)
+            setLoading(false)
         }
     }
     
-    const fetchAllData = () => {
+    const fetchAllData = async () => {
         let coin
-        if (state.coin.id && storageCoin === ''){
+        if (state.coin.id && storageCoin === '')
             coin = formatCryptoForServer(state.coin.name)
-        } else if (storageCoin !== '') {
+        else if (storageCoin !== '')
             coin = storageCoin
-        } else {
-            coin = 'bitcoin'
-            setStorageCoin(coin)
-        }
-        getChart(coin)
-        getNews()
-        getTrending()
-        getPriceBTC()
-        getPopularSymbols()
-        getDropdownItems()
+        else
+            setStorageCoin(coin = 'bitcoin')
+        await Promise.all([
+            getChart(coin),
+            getNews(),
+            getTrending(),
+            getPriceBTC(),
+            getPopularSymbols(),
+            getDropdownItems()
+        ])
     }
 
     React.useEffect(() => {
@@ -186,13 +165,12 @@ const AppState = props => {
             <Loader />
                 :
             <AppContext.Provider value={{
+                state,
                 getChart,
                 favorites,
                 setFavorites,
                 storageCoin,
                 setStorageCoin,
-                state,
-                setLoading,
                 tab,
                 setTab,
                 updateDays,

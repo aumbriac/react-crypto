@@ -1,6 +1,5 @@
 import React from 'react'
 import AppContext from '../context/AppContext'
-import formatCryptoForClient from '../functions/formatCryptoForClient'
 
 const TrendingList = () => {
     const { state, getChart } = React.useContext(AppContext)
@@ -12,7 +11,7 @@ const TrendingList = () => {
                     <div key={idx}
                         onClick={e => getChart(trending.item.id)} 
                         className={`list-group-item px-4 d-flex justify-content-between align-items-center 
-                            ${trending.item.name.toUpperCase() === formatCryptoForClient(state.coin.name)
+                            ${trending.item.name.toUpperCase() === state.coin.name.toUpperCase()
                                 ? 'bg-dark' 
                                 : 'bg-black'}`
                             }>

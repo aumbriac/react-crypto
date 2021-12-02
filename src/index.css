@@ -85,7 +85,7 @@ table, table tr, td, tbody {
   border: 0 !important
 }
 td {
-  padding: 0 !important
+  padding: .25rem !important
 }
 .list-group-item:hover {
   background: #111 !important;
