@@ -1,6 +1,6 @@
 # React Crypto App
 
-View trending cryptocurrencies, create a favorites list, view price charts, and more. Uses the free Coingecko API. [https://coingecko.com](https://coingecko.com)
+View trending cryptocurrencies, create a favorites list, view price charts, learn about different cryptocurrencies, and more. Uses the free Coingecko API. [https://coingecko.com](https://coingecko.com)
 
 ## Dependencies
 Axios
