@@ -13,7 +13,6 @@ const AppState = props => {
         chart: {},
         coin: {},
         trending: [],
-        favorites: [],
         news: [],
         popularSymbols: [],
         dropdownItems: [],
