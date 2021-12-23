@@ -15,7 +15,7 @@ const Trending = () => {
                             <div className={`p-3`} style={idx === 0 ? { background: 'transparent'} : { background: '#000'}}>
                                 <span className={`badge mx-auto mb-2 ${idx === 0 ? 'bg-danger' : 'bg-primary'}`}>#{idx + 1}</span>
                                 <img alt={coin.item.name} style={idx === 0 ? { width: '10rem', height: '10rem' } : { width: '5rem', height: '5rem' }} src={coin.item.large} 
-                                    className={`img-fluid rounded mx-auto m-2 d-block ${idx === 0 ? 'pulse' : ''}`} />
+                                    className={`bg-light img-fluid img-thumb p-1 rounded mx-auto m-2 d-block ${idx === 0 ? 'pulse' : ''}`} />
                                 <small className="text-light fw-bolder">{coin.item.name}</small>
                                 <div className="text-muted fw-bold">{coin.item.symbol}</div>
                                 <small className='fw-light'>&#36;{(coin.item.price_btc * state.priceBTC).toFixed(8)}</small>
