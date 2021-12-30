@@ -40,7 +40,7 @@ const Form = () => {
 
     return (
         <>
-            <form className="btn-group mt-2" onSubmit={handleSubmit}>
+            <form className="btn-group mt-2" onSubmit={handleSubmit} style={{zIndex: '1'}}>
                 <input onInput={e => handleSearchInput(e)} ref={formInputRef} className='form-control form-control-lg bg-dark text-light rounded-0' />
                 <button className="btn btn-lg btn-outline-light align-items-center d-flex rounded-0 me-3"><i className="material-icons">search</i></button>
                 <div className="dropdown">
