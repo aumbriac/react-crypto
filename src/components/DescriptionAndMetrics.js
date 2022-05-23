@@ -12,7 +12,7 @@ const DescriptionAndMetrics = () => {
         <>
             {state.coin.description &&
                 <>
-                    <div className="bg-black rounded-bottom text-center px-3 pb-2">
+                    <div style={{ marginTop: '8rem' }} className="bg-black rounded-bottom text-center px-3 pb-2">
                         {state.coin.description.en 
                             ?
                             <span className='text-light'>
@@ -36,11 +36,11 @@ const DescriptionAndMetrics = () => {
                         </div>
                         <div className="col">
                             <span className="text-muted">sentiment</span>&nbsp;
-                            <span className="fw-bolder" style={{ color: `${state.coin.sentiment_votes_up_percentage > 0 ? 'green' : 'red'}` }}>
+                            <span className="fw-bolder" style={{ color: `${state.coin.sentiment_votes_up_percentage > 0 ? 'limegreen' : 'red'}` }}>
                                 <span>
                                     {state.coin.sentiment_votes_up_percentage > 50 ? '+' : '-'}
                                 </span>
-                                <span className="fw-light">
+                                <span>
                                     {Math.abs(state.coin.sentiment_votes_up_percentage - state.coin.sentiment_votes_down_percentage).toFixed(2)}%
                                 </span>
                             </span>
@@ -76,7 +76,7 @@ const DescriptionAndMetrics = () => {
                                                     {truncateNumber(state.coin.community_data.twitter_followers)}
                                                 </span>
                                             </td>
-                                            <td className="text-secondary fw-bolder">
+                                            <td className="text-secondary fw-bolder" style={{ borderRight: '0' }}>
                                                 <span className="text-light">
                                                     {truncateNumber(state.coin.coingecko_score)}
                                                 </span>
@@ -100,7 +100,7 @@ const DescriptionAndMetrics = () => {
                                             <td style={{ fontSize: '.64rem' }}>
                                                 Twitter Followers
                                             </td>
-                                            <td style={{ fontSize: '.64rem' }}>
+                                            <td style={{ fontSize: '.64rem', borderRight: '0' }}>
                                                 Coingecko Score
                                             </td>
                                         </tr>

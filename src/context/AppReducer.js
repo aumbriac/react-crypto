@@ -31,11 +31,6 @@ const AppReducer = (state, action) => {
                 favorites: action.payload
             }
         }
-        case 'GET_NEWS':
-            return {
-                ...state,
-                news: action.payload
-            }
         case 'UPDATE_DAYS':
             return {
                 ...state,

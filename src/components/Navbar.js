@@ -25,11 +25,6 @@ const Navbar = () => {
                                 <i className="material-icons text-primary p-1">dashboard</i>
                             </div>
                         </Link>
-                        <Link to="/news">
-                            <div className={checkPath('/news')}>
-                                <i className="material-icons text-muted p-1">article</i>
-                            </div>
-                        </Link>
                         <Link to="/chart">
                             <div className={checkPath('/chart')}>
                                 <i className="material-icons text-success p-1">bar_chart</i>

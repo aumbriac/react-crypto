@@ -13,7 +13,6 @@ const AppState = props => {
         chart: {},
         coin: {},
         trending: [],
-        news: [],
         popularSymbols: [],
         dropdownItems: [],
         priceBTC: 0,
@@ -35,14 +34,6 @@ const AppState = props => {
             payload: [res.data.tickers]
         })
     }
-
-    const getNews = async () => {
-        const res = await axios.get(`https://api.coingecko.com/api/v3/status_updates`)
-        dispatch({
-            type: 'GET_NEWS',
-            payload: res.data.status_updates
-        })
-    }  
 
     const getTrending = async () => {
         const res = await axios.get(`https://api.coingecko.com/api/v3/search/trending`)
@@ -122,7 +113,6 @@ const AppState = props => {
             setStorageCoin(coin = 'bitcoin')
         await Promise.all([
             getChart(coin),
-            getNews(),
             getTrending(),
             getPriceBTC(),
             getPopularSymbols(),

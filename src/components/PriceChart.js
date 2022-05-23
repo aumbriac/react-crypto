@@ -24,6 +24,10 @@ const PriceChart = () => {
         layout: {
             padding: 0
         },
+        interaction: {
+            intersect: false,
+            mode: 'index',
+        },
         plugins: { 
             legend: { 
                 display: false
@@ -42,7 +46,6 @@ const PriceChart = () => {
                         }
                         return label
                     },
-
                     labelTextColor: function (context) {
                         return '#FFF'
                     }

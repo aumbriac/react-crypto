@@ -81,9 +81,12 @@ div, span, small, p {
   animation: pulse 3s infinite;
   animation-timing-function: ease-in-out;
 }
-table, table tr, td, tbody {
-  border: 0 !important
+
+td {
+  border-bottom: 0; 
+  border-right: 1px solid #333;
 }
+
 td {
   padding: .25rem !important
 }
